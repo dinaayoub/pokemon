@@ -1,5 +1,7 @@
-DROP TABLE IF EXISTS favorites;
+DROP TABLE IF EXISTS pokemons;
 
-CREATE TABLE favorites (
+CREATE TABLE pokemons (
     id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    url VARCHAR(255)
 );
