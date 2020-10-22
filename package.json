@@ -17,6 +17,7 @@
     "ejs": "3.0.2",
     "express": "^4.17.1",
     "jest": "^26.1.0",
+    "method-override": "^3.0.0",
     "morgan": "^1.10.0",
     "pg": "8.0.2",
     "puppeteer": "^5.1.0",
