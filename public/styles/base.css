@@ -1,0 +1,37 @@
+body{
+    background-color: rgb(247, 211, 216);
+    padding: 20px;
+    max-width: 960px;
+    margin: auto;
+    font-family: 'Heebo', sans-serif;
+    font-size: 16pt;
+}
+
+hr{
+    border: 2px rgb(168, 129, 129) solid;
+}
+
+button{
+    background-color: rgb(163, 8, 184);
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Heebo', sans-serif;
+    color: white;
+}
+
+h1{
+    font-family: 'Lobster', sans-serif;
+    font-size: 28pt;
+    text-align: center;
+    padding: 10px;
+}
+
+h2 {
+    padding: 10px;
+}
+h3{
+    text-align: center;
+    font-family: 'Heebo', sans-serif;
+    font-size: 20pt;
+    padding: 10px;
+}

@@ -1,0 +1,13 @@
+.list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: decimal;
+    text-align: center;
+}
+
+.listItem {
+    display: inline;
+    margin: 10px;
+    width: 15vw;
+}

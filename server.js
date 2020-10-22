@@ -18,12 +18,14 @@ env.config();
 const PORT = process.env.PORT || 3000;
 const client = new pg.Client(process.env.DATABASE_URL);
 
-//connect to db 
+//connect to db
 client.connect();
 client.on('error', error => handleErrors(error));
 
 //routes
 app.get('/', getPokemonFromAPI);
+app.post('/pokemon', saveFavoritePokemon)
+app.get('/favorites', getFavoritesFromDB);
 
 //object constructors
 function Pokemon (data){
@@ -31,26 +33,57 @@ function Pokemon (data){
   this.url = data.url;
 }
 
+
 //functions
+//get the first 100 pokemon from the api
 function getPokemonFromAPI(req,res) {
-  let pokeapi = `https://pokeapi.co/api/v2/pokemon?limit=100&offset=0`
-  superagent.get(pokeapi)
+  let pokeapiURL = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`
+  superagent.get(pokeapiURL)
     .then(data => {
-      if (data.results.length > 0) {
-        data.results.forEach(item => new Pokemon(item));
+      //console.log(data);
+      var pokemonsObjectArray= [];
+      if (data.body.results.length > 0) {
+        let tempArray = data.body.results.sort((a,b) => {
+          if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+          if (a.name.toLowerCase()> b.name.toLowerCase()) return 1;
+          return 0;
+        });
+        pokemonsObjectArray = tempArray.map(item => new Pokemon(item));
+        res.render('pages/show', {pokemons : pokemonsObjectArray});
       }
-      res.render('/pages/show', {pokemons : data})
+      else handleErrors(new Error('No pokemon returned from the API'), res);
+    })
+    .catch(error => handleErrors(error,res));
+}
+
+function saveFavoritePokemon(req,res) {
+  //let id = req.params.id;
+  let { name } = req.body;
+  let SQL = `INSERT INTO pokemons (name) VALUES ($1);`;
+  let values = [ name ];
+  client.query(SQL, values)
+    .then (() => {
+      res.redirect('/');
+    })
+    .catch(error => handleErrors(error,res));
+}
+
+function getFavoritesFromDB(req,res) {
+  let SQL = 'SELECT * FROM pokemons;';
+  client.query(SQL)
+    .then (data => {
+      res.render('pages/favorites', {pokemons : data.rows});
     })
     .catch(error => handleErrors(error,res));
 }
 function handleErrors(error,res) {
-    if (!error.message) error = new Error('page not found');
-    console.error(error);
-    res.render('pages/error', { error: error });
+  if (!error.message) error = new Error('page not found');
+  console.error(error);
+  res.render('pages/error', { error: error });
 }
 
 //catch all for unknown routes
-app.get('*', handleErrors);
+//app.get('*', handleErrors);
 
 //start up the server
 app.listen(PORT, () => {

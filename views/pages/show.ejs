@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../layout/head') %>
+</head>
+
+<body>
+    <header>
+        <%- include('../layout/header') %>
+    </header>
+    <main>
+        <h3><%=pokemons.length%> pokemons returned</h3>
+        <hr>
+        <ol class="list">
+            <% pokemons.forEach(pokemon => { %>
+            <li class="listItem"><%- include('details', {pokemon : pokemon}) %></li>
+            <% }); %>
+
+        </ol>
+    </main>
+    <footer>
+        <%- include('../layout/footer') %>
+    </footer>
+</body>
+
+</html>
